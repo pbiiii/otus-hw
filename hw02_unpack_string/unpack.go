@@ -10,8 +10,8 @@ import (
 var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(input string) (string, error) {
-	var byteArray = []rune(input)
-	var length = len(byteArray)
+	byteArray := []rune(input)
+	length := len(byteArray)
 	var result strings.Builder
 	var lastRune rune
 
