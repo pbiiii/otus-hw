@@ -47,7 +47,6 @@ func Unpack(input string) (string, error) {
 		}
 
 		currentSymbolNumber, err := strconv.Atoi(string(currentRune))
-
 		if err != nil {
 			return "", ErrInvalidString
 		}
