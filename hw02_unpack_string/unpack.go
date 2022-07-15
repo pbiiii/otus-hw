@@ -10,14 +10,14 @@ import (
 var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(input string) (string, error) {
+	if input == "" {
+		return "", nil
+	}
+
 	byteArray := []rune(input)
 	length := len(byteArray)
 	var result strings.Builder
 	var lastRune rune
-
-	if input == "" {
-		return result.String(), nil
-	}
 
 	for i := 0; i < length; i++ {
 		currentRune := byteArray[i]
@@ -46,7 +46,11 @@ func Unpack(input string) (string, error) {
 			continue
 		}
 
-		currentSymbolNumber, _ := strconv.Atoi(string(currentRune))
+		currentSymbolNumber, err := strconv.Atoi(string(currentRune))
+
+		if err != nil {
+			return "", ErrInvalidString
+		}
 
 		for j := 0; j < currentSymbolNumber; j++ {
 			result.WriteRune(lastRune)
