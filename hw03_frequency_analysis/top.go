@@ -14,12 +14,7 @@ func Top10(input string) []string {
 	wordsMap := map[string]int{}
 
 	for i := 0; i < len(wordsArray); i++ {
-		word := wordsArray[i]
-		if _, ok := wordsMap[word]; ok {
-			wordsMap[word]++
-		} else {
-			wordsMap[word] = 1
-		}
+		wordsMap[wordsArray[i]]++
 	}
 
 	keys := make([]string, 0, len(wordsMap))
