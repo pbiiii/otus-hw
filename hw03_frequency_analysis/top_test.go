@@ -65,16 +65,16 @@ func TestTop10(t *testing.T) {
 			require.Equal(t, expected, Top10(text))
 		} else {
 			expected := []string{
+				"а",         // 8
 				"он",        // 8
-				"а",         // 6
 				"и",         // 6
 				"ты",        // 5
 				"что",       // 5
 				"-",         // 4
-				"Кристофер", // 4
+				"в",         // 4
 				"если",      // 4
+				"кристофер", // 4
 				"не",        // 4
-				"то",        // 4
 			}
 			require.Equal(t, expected, Top10(text))
 		}
