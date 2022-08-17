@@ -7,14 +7,14 @@ import (
 
 func Top10(input string) []string {
 	if input == "" {
-		return []string{}
+		return nil
 	}
 
 	wordsArray := strings.Fields(input)
 	wordsMap := map[string]int{}
 
 	for i := 0; i < len(wordsArray); i++ {
-		wordsMap[strings.ToLower(wordsArray[i])]++
+		wordsMap[wordsArray[i]]++
 	}
 
 	keys := make([]string, 0, len(wordsMap))
