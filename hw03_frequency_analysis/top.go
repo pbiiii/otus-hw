@@ -35,5 +35,9 @@ func Top10(input string) []string {
 		return keys[i] < keys[j]
 	})
 
-	return keys[0:10]
+	if len(keys) > 10 {
+		return keys[0:10]
+	}
+
+	return keys
 }
