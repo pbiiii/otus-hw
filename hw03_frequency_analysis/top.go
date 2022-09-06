@@ -5,6 +5,36 @@ import (
 	"strings"
 )
 
+type WordWithFreq struct {
+	String string
+	Freq   int
+}
+
+type WordsByFreq []WordWithFreq
+
+func (w WordsByFreq) Len() int {
+	return len(w)
+}
+
+func (w WordsByFreq) Swap(i, j int) {
+	w[i], w[j] = w[j], w[i]
+}
+
+func (w WordsByFreq) Less(i, j int) bool {
+	iWord := w[i]
+	jWord := w[j]
+
+	if iWord.Freq > jWord.Freq {
+		return true
+	}
+
+	if iWord.Freq < jWord.Freq {
+		return false
+	}
+
+	return iWord.String < jWord.String
+}
+
 func Top10(input string) []string {
 	if input == "" {
 		return nil
@@ -13,30 +43,33 @@ func Top10(input string) []string {
 	wordsArray := strings.Fields(input)
 	wordsMap := map[string]int{}
 
+	var byFreqMap WordsByFreq
+
 	for i := 0; i < len(wordsArray); i++ {
 		wordsMap[wordsArray[i]]++
 	}
 
-	keys := make([]string, 0, len(wordsMap))
-
-	for k := range wordsMap {
-		keys = append(keys, k)
+	for word, freq := range wordsMap {
+		byFreqMap = append(byFreqMap, WordWithFreq{
+			String: word,
+			Freq:   freq,
+		})
 	}
 
-	sort.SliceStable(keys, func(i, j int) bool {
-		if wordsMap[keys[i]] > wordsMap[keys[j]] {
-			return true
-		}
+	sort.Stable(byFreqMap)
 
-		if wordsMap[keys[i]] < wordsMap[keys[j]] {
-			return false
-		}
+	var firstWords []WordWithFreq
 
-		return keys[i] < keys[j]
-	})
+	if byFreqMap.Len() > 10 {
+		firstWords = byFreqMap[0:10]
+	} else {
+		firstWords = byFreqMap
+	}
 
-	if len(keys) > 10 {
-		return keys[0:10]
+	var keys []string
+
+	for _, w := range firstWords {
+		keys = append(keys, w.String)
 	}
 
 	return keys
