@@ -47,7 +47,7 @@ func Top10(input string) []string {
 		wordsMap[wordsArray[i]]++
 	}
 
-	byFreqMap := make(WordsByFreq, len(wordsMap))
+	byFreqMap := make(WordsByFreq, len(wordsMap), len(wordsMap))
 	for word, freq := range wordsMap {
 		byFreqMap = append(byFreqMap, WordWithFreq{
 			String: word,
@@ -65,7 +65,7 @@ func Top10(input string) []string {
 		firstWords = byFreqMap
 	}
 
-	keys := make([]string, len(firstWords))
+	keys := make([]string, len(firstWords), len(firstWords))
 	for _, w := range firstWords {
 		keys = append(keys, w.String)
 	}
