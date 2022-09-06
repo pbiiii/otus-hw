@@ -48,11 +48,13 @@ func Top10(input string) []string {
 	}
 
 	byFreqMap := make(WordsByFreq, len(wordsMap))
+	i := 0
 	for word, freq := range wordsMap {
-		byFreqMap = append(byFreqMap, WordWithFreq{
+		byFreqMap[i] = WordWithFreq{
 			String: word,
 			Freq:   freq,
-		})
+		}
+		i++
 	}
 
 	sort.Stable(byFreqMap)
