@@ -9,6 +9,23 @@ import (
 // Change to true if needed.
 var taskWithAsteriskIsCompleted = false
 
+func TestTop10(t *testing.T) {
+	t.Run("no words in empty string", func(t *testing.T) {
+		require.Len(t, Top10(""), 0)
+	})
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run("positive test", func(t *testing.T) {
+			if taskWithAsteriskIsCompleted {
+				require.Equal(t, tc.expectedWithAsterisk, Top10(tc.text))
+			} else {
+				require.Equal(t, tc.expected, Top10(tc.text))
+			}
+		})
+	}
+}
+
 var testCases = []struct {
 	text                 string
 	expected             []string
@@ -109,20 +126,31 @@ var testCases = []struct {
 			"condimentum", // 3
 		},
 	},
-}
-
-func TestTop10(t *testing.T) {
-	t.Run("no words in empty string", func(t *testing.T) {
-		require.Len(t, Top10(""), 0)
-	})
-
-	for _, testCase := range testCases {
-		t.Run("positive test", func(t *testing.T) {
-			if taskWithAsteriskIsCompleted {
-				require.Equal(t, testCase.expectedWithAsterisk, Top10(testCase.text))
-			} else {
-				require.Equal(t, testCase.expected, Top10(testCase.text))
-			}
-		})
-	}
+	{
+		text: `Абзац, обозначая своего рода «цезуру», является единицей членения текста,
+			промежуточной между фразой и главой, и служит для группировки однородных единиц изложения,
+			исчерпывая один из его моментов (тематический, сюжетный и т. д.).
+			Выделение фразы в особый абзац усиливает падающий на неё смысловой акцент.
+			Абзац способствует правильному и быстрому восприятию текста.
+			
+			Абзац — малоисследованный компонент литературной формы, имеющий композиционное,
+			сюжетно-тематическое, ритмическое значение и связанный со стилем автора.
+			Характерны, например, краткие абзацы в импрессионистической прозе — симптомы раздробленности,
+			афористичности мысли; или например возвращение к длинному абзацу в несколько страниц у М. Пруста,
+			связанное со стернианской, так называемой «спиралевидной цикличностью» его изложения.
+			Особенно выразителен абзац у А. Белого, который выделяет в особые абзацы даже отдельные части фразы,
+			подчёркивая этим тематическую значимость, ритмическое развитие выделяемых частей.`,
+		expected: []string{
+			"и",           // 5
+			"в",           // 4
+			"Абзац",       // 3
+			"абзац",       // 2
+			"абзацы",      // 2
+			"его",         // 2
+			"ритмическое", // 2
+			"со",          // 2
+			"у",           // 2
+			"—",           // 2
+		},
+	},
 }
