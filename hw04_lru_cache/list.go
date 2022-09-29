@@ -112,11 +112,8 @@ func (l *MyList) MoveToFront(i *ListItem) {
 		return
 	}
 
-	first := l.Front()
-	next := i.Next
-
 	// Если элемент находится в конце списка
-	if next == nil {
+	if next := i.Next; next == nil {
 		prev.Next = nil
 		l.last = prev
 	} else {
@@ -125,6 +122,7 @@ func (l *MyList) MoveToFront(i *ListItem) {
 		l.last = next
 	}
 
+	first := l.Front()
 	i.Prev = nil
 	i.Next = first
 	first.Prev = i

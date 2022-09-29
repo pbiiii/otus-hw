@@ -14,20 +14,6 @@ type lruCache struct {
 	items    map[Key]*ListItem
 }
 
-func (c *lruCache) removeItemByValue(val interface{}) {
-	filtered := make(map[Key]*ListItem, c.capacity)
-
-	for k, i := range c.items {
-		if i.Value == val {
-			continue
-		}
-
-		filtered[k] = i
-	}
-
-	c.items = filtered
-}
-
 func (c *lruCache) Set(key Key, value interface{}) bool {
 	ci := cacheItem{
 		value: value,
