@@ -1,6 +1,76 @@
 package hw03frequencyanalysis
 
-func Top10(_ string) []string {
-	// Place your code here.
-	return nil
+import (
+	"sort"
+	"strings"
+)
+
+type WordWithFreq struct {
+	String string
+	Freq   int
+}
+
+type WordsByFreq []WordWithFreq
+
+func (w WordsByFreq) Len() int {
+	return len(w)
+}
+
+func (w WordsByFreq) Swap(i, j int) {
+	w[i], w[j] = w[j], w[i]
+}
+
+func (w WordsByFreq) Less(i, j int) bool {
+	iWord := w[i]
+	jWord := w[j]
+
+	if iWord.Freq > jWord.Freq {
+		return true
+	}
+
+	if iWord.Freq < jWord.Freq {
+		return false
+	}
+
+	return iWord.String < jWord.String
+}
+
+func Top10(input string) []string {
+	if input == "" {
+		return nil
+	}
+
+	wordsArray := strings.Fields(input)
+	wordsMap := map[string]int{}
+
+	for i := 0; i < len(wordsArray); i++ {
+		wordsMap[wordsArray[i]]++
+	}
+
+	byFreqMap := make(WordsByFreq, len(wordsMap))
+	i := 0
+	for word, freq := range wordsMap {
+		byFreqMap[i] = WordWithFreq{
+			String: word,
+			Freq:   freq,
+		}
+		i++
+	}
+
+	sort.Stable(byFreqMap)
+
+	var firstWords []WordWithFreq
+
+	if byFreqMap.Len() > 10 {
+		firstWords = byFreqMap[0:10]
+	} else {
+		firstWords = byFreqMap
+	}
+
+	keys := make([]string, len(firstWords))
+	for i, w := range firstWords {
+		keys[i] = w.String
+	}
+
+	return keys
 }
