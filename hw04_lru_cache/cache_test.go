@@ -50,7 +50,92 @@ func TestCache(t *testing.T) {
 	})
 
 	t.Run("purge logic", func(t *testing.T) {
-		// Write me
+		var i interface{}
+		var ok bool
+
+		c := NewCache(5)
+
+		wasInCache := c.Set("aaa", 100)
+		require.False(t, wasInCache)
+
+		i, ok = c.Get("aaa")
+
+		require.Equal(t, 100, i)
+		require.True(t, ok)
+
+		c.Clear()
+
+		i, ok = c.Get("aaa")
+
+		require.Nil(t, i)
+		require.False(t, ok)
+	})
+
+	t.Run("push out logic", func(t *testing.T) {
+		c := NewCache(2)
+
+		c.Set("aaa", 100)
+		c.Set("bbb", 200)
+
+		i, ok := c.Get("aaa")
+
+		require.Equal(t, 100, i)
+		require.True(t, ok)
+
+		i, ok = c.Get("bbb")
+
+		require.Equal(t, 200, i)
+		require.True(t, ok)
+
+		c.Set("ccc", 300)
+
+		i, ok = c.Get("ccc")
+
+		require.Equal(t, 300, i)
+		require.True(t, ok)
+
+		i, ok = c.Get("aaa")
+
+		require.Nil(t, i)
+		require.False(t, ok)
+
+		i, ok = c.Get("bbb")
+
+		require.Equal(t, 200, i)
+		require.True(t, ok)
+	})
+
+	t.Run("push out old items logic", func(t *testing.T) {
+		c := NewCache(3)
+
+		c.Set("aaa", 100)
+		c.Set("bbb", 200)
+		c.Set("ccc", 300)
+
+		c.Get("aaa")
+		c.Set("bbb", 250)
+
+		c.Set("ddd", 400)
+
+		i, ok := c.Get("aaa")
+
+		require.Equal(t, 100, i)
+		require.True(t, ok)
+
+		i, ok = c.Get("bbb")
+
+		require.Equal(t, 250, i)
+		require.True(t, ok)
+
+		i, ok = c.Get("ddd")
+
+		require.Equal(t, 400, i)
+		require.True(t, ok)
+
+		i, ok = c.Get("ccc")
+
+		require.Nil(t, i)
+		require.False(t, ok)
 	})
 }
 
